@@ -93,8 +93,7 @@ for row = 1 : trow
     if strcmp(tr{1}{1}, current_station)
         % No need to change the fid
         % just call the function and write the data
-        bmdStrWrite(fid, tr, station_no, db);
-        fprintf('.\n');  
+        bmdStrWrite(fid, tr, station_no, db);  
     else
         % fclose current fid if not empty else create an fid
         if isempty(fid)
@@ -103,6 +102,7 @@ for row = 1 : trow
             filename = [saveto, '\', num2str(station_no), tr{1}{1}, '.txt'];
             fid = fopen(filename, 'a');
         else
+			fprintf('%s.txt written successfully.\n', filename);
             fclose(fid);
             % create filename
             station_no = station_no + 1;
@@ -117,5 +117,3 @@ for row = 1 : trow
 end
 
 fprintf('Write Completed!')
-
-
