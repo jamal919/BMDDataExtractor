@@ -5,9 +5,9 @@
 % Clearing all
 clc; close all;
 
-openfile = uigetfile('*', 'Select BMD precipitation file');
+[ofile, ofileloc] = uigetfile('*', 'Select BMD precipitation file');
 
-T = readtable(openfile);
+T = readtable([ofileloc, ofile]);
 db = 1; % Writing for Access database
 
 saveto = uigetdir();
@@ -74,18 +74,58 @@ for row = 1 : trow
                 % TODO
                 % Set data to a variable.
             end
+            
+            % Check for false positive by checking the last value is empty
+            if isempty(tr{34})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
+            
+            % False positive, becomes 29 days
+            if isempty(tr{33})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
+            % False positive, becomes 28 days
+            if isempty(tr{32})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
+            
         elseif length(linedata) >= 140 && length(linedata) <= 143
             % Reading formatted text for 30 days, 140 - 143 charecter,
             % always data
             tr = textscan(linedata, '%s %d %d %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
+            
+            % False positive, becomes 29 days
+            if isempty(tr{33})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
+            % False positive, becomes 28 days
+            if isempty(tr{32})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
+         
         elseif length(linedata) >= 132 && length(linedata) <= 135
             % Reading formatted text for 28 days, 132 to 135
             % Always data
             tr = textscan(linedata, '%s %d %d %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
+            % False checking, Not required though
+            if isempty(tr{31})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
         elseif length(linedata) >= 136 && length(linedata) <= 139
             % Reading formatted text for 29 days, 136 to 139
             % Always data
             tr = textscan(linedata, '%s %d %d %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
+            % False positive, should be very rare
+            if isempty(tr{32})
+                tr = tr(1 : length(tr) - 1);
+                % Else, do nothing
+            end
         end
     end
     
@@ -93,7 +133,7 @@ for row = 1 : trow
     if strcmp(tr{1}{1}, current_station)
         % No need to change the fid
         % just call the function and write the data
-        bmdStrWrite(fid, tr, station_no, db);  
+        bmdCSVWrite(fid, tr, station_no, db);  
     else
         % fclose current fid if not empty else create an fid
         if isempty(fid)
@@ -102,7 +142,7 @@ for row = 1 : trow
             filename = [saveto, '\', num2str(station_no), tr{1}{1}, '.txt'];
             fid = fopen(filename, 'a');
         else
-			fprintf('%s.txt written successfully.\n', filename);
+			fprintf('%s written successfully.\n', filename);
             fclose(fid);
             % create filename
             station_no = station_no + 1;
@@ -111,9 +151,9 @@ for row = 1 : trow
             fid = fopen(filename, 'a');
         end
         % Write the data, calling the function
-        bmdStrWrite(fid, tr, station_no, db);
+        bmdCSVWrite(fid, tr, station_no, db);
     end
         
 end
 
-fprintf('Write Completed!')
+fprintf('Write Completed!\n')
