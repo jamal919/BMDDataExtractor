@@ -11,7 +11,8 @@ clc; close all;
 [ofile, ofileloc] = uigetfile('*', 'Select BMD precipitation file');
 
 T = readtable([ofileloc, ofile]);
-db = 1; % Writing for Access database
+% db = 0; % Writing for Access database
+db = 0; % Writing for rClimDex
 
 saveto = uigetdir();
 
@@ -113,7 +114,7 @@ for row = 1 : trow
         % No need to change the fid
         % just call the function and write the data
         
-        bmdCSVWrite(fid, tr, station_no(nos), db);  
+        bmdStrWrite(fid, tr, station_no(nos), db);  
     else
         % fclose current fid if not empty else create an fid
         if fid == -1 % no file is opened
@@ -136,9 +137,10 @@ for row = 1 : trow
             end
         end
         % Write the data, calling the function
-        bmdCSVWrite(fid, tr, station_no(nos), db);
+        bmdStrWrite(fid, tr, station_no(nos), db);
     end
         
 end
-
+% closing all opened file
+fclose('all');
 fprintf('Write Completed!\n')
