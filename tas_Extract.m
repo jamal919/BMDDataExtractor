@@ -2,6 +2,9 @@
 % Author: Jamal Uddin Khan
 % Email: Md. Jamal Uddin Khan
 
+% Bugs:
+%   Check if station location was found correctly
+
 % Clearing all
 clc; close all;
 
@@ -132,7 +135,6 @@ for row = 1 : trow
                 % Do nothing
             end
         end
-        
         % Write the data, calling the function
         bmdCSVWrite(fid, tr, station_no(nos), db);
     end
