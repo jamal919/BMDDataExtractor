@@ -55,8 +55,6 @@ load tasStations;
 [trow, tcol] = size(T);
 current_station = 0; % set to zero
 nos = 0;
-r = 0;
-c = 0;
 fid = -1; % -1 for conforming with the MATLAB notation of no file is open
 
 % Now running loop over #1 to #trow
@@ -73,7 +71,7 @@ for row = 1 : trow
             % Reading as formatted text for 31 days
             tr = textscan(linedata, '%d %d %d %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
             % Check if it is the header using isempty function
-            if isempty(tr{1})
+            if isempth(tr{1})
                 % When read the index file and others, it creates empty
                 % matrix. No need to consider in the calculation.
                 continue;
@@ -109,30 +107,24 @@ for row = 1 : trow
     if tr{1} == current_station
         % No need to change the fid
         % just call the function and write the data
-        
         bmdCSVWrite(fid, tr, station_no(nos), db);  
     else
         % fclose current fid if not empty else create an fid
         if fid == -1 % no file is opened
             % keep an eye for invalid file here
-            current_station = tr{1};
-            [nos, ~] =  find(station_index == current_station);
+            current_station = tr{1}{1};
+            nos = nos + 1;
             filename = [saveto, '\', num2str(station_no(nos)), station_names{nos}, '.txt'];
             fid = fopen(filename, 'a');
         else
 			fprintf('%s written successfully.\n', filename);
             fclose(fid);
             % create filename
-            current_station = tr{1};
-            [nos, ~] = find(station_index == current_station);
-            if nos <= length(station_no)
-                filename = [saveto, '\', num2str(station_no(nos)), station_names{nos}, '.txt'];
-                fid = fopen(filename, 'a');
-            else
-                % Do nothing
-            end
+            nos = nos + 1;
+            current_station = tr{1}{1};
+            filename = [saveto, '\', num2str(station_no(nos)), station_names{nos}, '.txt'];
+            fid = fopen(filename, 'a');
         end
-        
         % Write the data, calling the function
         bmdCSVWrite(fid, tr, station_no(nos), db);
     end

@@ -13,9 +13,7 @@ if db == 0
     % Write data for rClimDex directly
 
     for day = 1 : length(dataString)-3
-        linestr = [];
         datestr = [num2str(year, '%04i'), num2str(month, '%02i'), num2str(day, '%02i')];
-        linestr = [];
     end
     
 elseif db == 1
