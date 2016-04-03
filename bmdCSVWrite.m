@@ -4,6 +4,9 @@ function [ success ] = bmdCSVWrite( fid, dataString, station_no, db )
 %   The string is in station name, year, month, daily data format. The data
 %   string is first converted to suitable format for importing to the
 %   databse and then write the to file given by variable fid.
+% Author: Jamal Uddin Khan
+% Email: jamal919@gmail.com
+% License: LGPL
 success = 0;
 
 year = dataString{2};
