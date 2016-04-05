@@ -63,7 +63,7 @@ for row = 1 : trow
     % reading the line #row
     % read as text
     linedata = T{row, 1}{1};
-    if length(linedata) < 136
+    if length(linedata) < 100
         % These are not any kind of data. Just information.
         % Proceeding further with other line.
         continue;
