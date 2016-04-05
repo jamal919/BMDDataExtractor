@@ -165,4 +165,6 @@ for row = 1 : trow
         
 end
 
+% closing all opened file
+fclose('all');
 fprintf('Write Completed!\n')
