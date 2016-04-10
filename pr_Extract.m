@@ -9,7 +9,8 @@ clc; close all;
 [ofile, ofileloc] = uigetfile('*', 'Select BMD precipitation file');
 
 T = readtable([ofileloc, ofile]);
-db = 1; % Writing for Access database
+% db = 1; % Writing for Access database
+db = 0; % Writing for rClimDex format
 
 saveto = uigetdir();
 
