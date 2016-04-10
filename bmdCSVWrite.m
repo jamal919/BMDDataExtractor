@@ -23,7 +23,7 @@ elseif db == 1
     % Write data for database
     % date in yyyymmdd format
     for day = 1 : length(dataString)-3
-        datestr = [num2str(year, '%04i'), '/', num2str(month, '%02i'), '/', num2str(day, '%02i')];
+        datestr = [num2str(year, '%04i'), ',', num2str(month, '%02i'), ',', num2str(day, '%02i')];
         fprintf(fid, '%s,%s,%s\n', num2str(station_no), datestr, num2str(dataString{day + 3}));
         % Plus 3 is to account for the first three fields
     end
