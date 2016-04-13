@@ -57,7 +57,8 @@ load tasStations;
 % %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
 
 % Size of Table
-[tRow, tCol] = size(T);
+[tRow, tC
+ol] = size(T);
 currentStation = 0; % set to zero
 nos = 0;
 r = 0;

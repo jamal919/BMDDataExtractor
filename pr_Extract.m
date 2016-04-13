@@ -9,8 +9,8 @@ clc; close all;
 [ofile, ofileloc] = uigetfile('*', 'Select BMD precipitation file');
 
 T = readtable([ofileloc, ofile]);
-% db = 1; % Writing for Access database
-db = 0; % Writing for rClimDex format
+% formats - 'csv', 'txt', 'db', 'rclim'
+outFormat = 'csv'; 
 
 saveto = uigetdir();
 
@@ -54,13 +54,13 @@ load prStations;
 % %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f');
 
 % Size of Table
-[trow, tcol] = size(T);
+[tRow, tCol] = size(T);
 current_station = [];
 nos = 0;
 fid = -1; % -1 for conforming with the MATLAB notation of no file is open
 
 % Now running loop over #1 to #trow
-for row = 1 : trow
+for row = 1 : tRow
     % reading the line #row
     % read as text
     linedata = T{row, 1}{1};
@@ -142,7 +142,7 @@ for row = 1 : trow
     if strcmp(tr{1}{1}, current_station)
         % No need to change the fid
         % just call the function and write the data
-        bmdStrWrite(fid, tr, station_no(nos), db);  
+        bmdStrWrite(fid, tr, station_no(nos), outFormat);  
     else
         % fclose current fid if not empty else create an fid
         if fid == -1 % no file is opened
@@ -161,7 +161,7 @@ for row = 1 : trow
             fid = fopen(filename, 'a');
         end
         % Write the data, calling the function
-        bmdStrWrite(fid, tr, station_no(nos), db);
+        bmdStrWrite(fid, tr, station_no(nos), outFormat);
     end
         
 end

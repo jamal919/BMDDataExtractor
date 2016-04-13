@@ -11,15 +11,6 @@ function [ success ] = bmdStrWrite( fid, dataString, station_no, format )
 
 success = 0;
 
-% Check argument
-if nargin == 3
-    format = 'csv';
-elseif nargin < 3
-    error('Insufficient argument.')
-elseif nargin > 4
-    error('More Argument than required.');
-end
-
 year = dataString{2};
 month = dataString{3};
 
@@ -43,10 +34,7 @@ elseif strcmp(format, 'rclim')
 elseif strcmp(format, 'db')
     for day = 1 : length(dataString) - 3
         datestr = [num2str(year, '%04i'), num2str(month, '%02i'), num2str(day, '%02i')];
-        fprintf(fid, '%d,%6s,.1f\r\n', station_no, datestr, dataString{day + 3});
-    end
-else
-    error('Error with output format. Check Argument.');
+        fprintf(fid, '%'
 end
 
 success = 1;
