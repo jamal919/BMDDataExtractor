@@ -11,70 +11,19 @@ function [ margedResult, startDateVec, endDateVec ] = MargePrAndT( prData, tMaxD
 % Email: jamal919@gmail.com
 % Created: 10/04/2016
 
-% Constants
+%% Constants
 MISSING_VALUES = -99.9;
 
-% Output values
-margedResult = [];
+%% Setting Start and end Date
+% using datevec format [year month day]
+startDate = [1948, 1, 1];
+endDate = [2015, 6, 30];
 
-%% Checking data length for prData (1), tMaxData (2), tMinData (3)
-% Finding data with smallest data length
-[~, startIndex] = max([datetime(prData(1, 2:4)), datetime(tMaxData(1, 2:4)), datetime(tMinData(1, 2:4))]);
-[~, endIndex] = min([datetime(prData(end, 2:4)), datetime(tMaxData(end, 2:4)), datetime(tMinData(end, 2:4))]);
+%% Create output variables
+outLength = datenum(endDate) - datenum(startDate) + 1; % +1 for first day
+outVar = zeros(); %TODO
+%% Iterate over date
 
-% Select start date by taking the max of starting dates
-if startIndex == 1
-    % prData is the smallest
-    stDate = prData(1, 2:4);
-elseif startIndex == 2
-    % tMaxData is the smallest
-    stDate = tMaxData(1, 2:4);
-elseif startIndex == 3
-    % tMinData is the smallest
-    stDate = tMinData(1, 2:4);
-end
-
-% Select End Date
-if endIndex == 1
-    endDate = prData(end, 2:4);
-elseif endIndex == 2
-    endDate = tMaxData(end, 2:4);
-elseif endIndex == 3
-    endDate = tMinData(end, 2:4);
-end
-
-%% Finding unique year
-uniqueYear = stDate(1) : endDate(1);
-
-%% Now for each unique year, collect data and marge them constantly
-for year = 1 : uniqueYear
-    % Find where the data value is maximum
-    prYear = length(prData(prData(:, 2) == uniqueYear(year), 2 : 4));
-    tMaxYear = length(tMaxData(tMaxData(:, 2) == uniqueYear(year), 2 : 4));
-    tMinYear = length(tMinData(tMinData(:, 2) == uniqueYear(year), 2 : 4));
-    
-    if length(prYear) == length(tMaxYear) && length(tMaxYear) == length(tMinYear)
-       fprintf('MargePrAndT :: Data is OK');
-    else
-        fprintf('MargePrAndT :: Data mismatch');
-    end
-    
-    rowSize = max([prYear, tMaxYear, tMinYear]);
-    
-    chunkData = ones(rowSize, 6) * MISSING_VALUES;
-    
-    chunkData(:, 1) = prData(prData(:, 2) == uniqueYear(year), 2);
-    chunkData(:, 2) = prData(prData(:, 2) == uniqueYear(year), 3);
-    chunkData(:, 3) = prData(prData(:, 2) == uniqueYear(year), 4);
-    chunkData(:, 4) = prData(prData(:, 2) == uniqueYear(year), 5);
-    chunkData(:, 4) = tMaxData(tMaxData(:, 2) == uniqueYear(year), 5);
-    chunkData(:, 5) = tMinData(tMinData(:, 2) == uniqueYear(year), 5);
-    
-    margedResult = [margedResult; chunkData];
-end
-
-%% Other results
-startDateVec = stDate;
-endDateVec = endDate;
+%% Returning the results
 end
 
