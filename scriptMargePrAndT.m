@@ -1,4 +1,4 @@
-%% MargePAnsTSimple loads the data, and simply give output
+%% scriptMargePAnsTSimple loads the data, and simply give output
 % No attempt is made to check due to time constrain
 % Author: Md. Jamal Uddin Khan
 % Created: 25.04.2016
