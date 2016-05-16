@@ -1,4 +1,4 @@
-function [ margedResult, startDateVec, endDateVec ] = MargePrAndT( prData, tMaxData, tMinData, stationPresent )
+function [ margedResult, startDateVec, endDateVec ] = MargePrAndT( prData, tMaxData, tMinData, startDate, endDate, stationPresent )
 %%MargePrAndT marge and returns the time indexed Precipitation, Maximum
 %Temperature and Minimum Temperature
 %   This function takes precipitation, maxmimum temperature and minimum
@@ -15,7 +15,7 @@ function [ margedResult, startDateVec, endDateVec ] = MargePrAndT( prData, tMaxD
 MISSING_VALUES = -99.9;
 
 %% Iput Argument check
-if nargin == 3
+if nargin == 5
     stationPresent = true;
 elseif nargin == 4
     % All parameters are present
@@ -26,8 +26,8 @@ end
 
 %% Setting Start and end Date
 % using datevec format [year month day]
-startDate = [2014, 1, 1];
-endDate = [2015, 6, 30];
+% startDate = [2014, 1, 1];
+% endDate = [2015, 6, 30];
 
 %% Create output variables
 dnStartDate = datenum(startDate);
