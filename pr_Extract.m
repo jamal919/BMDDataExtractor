@@ -69,7 +69,7 @@ for row = 1 : tRow
         % Proceeding further with other line.
         continue;
     else
-        if length(linedata) >= 144
+        if length(linedata) >= 100
             % 2 possibilities here
             % A 31 days data or a table header file.
             % Check and work the line correctly
