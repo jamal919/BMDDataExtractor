@@ -20,9 +20,11 @@ elseif nargin > 4
     error('More Argument than required.');
 end
 
-year = dataString{2};
-month = dataString{3};
-
+if ~strcmp(format, 'rhcsv')
+    year = dataString{2};
+    month = dataString{3};
+end
+    
 if strcmp(format, 'csv')
     % Write Data into csv format
 
@@ -44,6 +46,11 @@ elseif strcmp(format, 'db')
     for day = 1 : length(dataString) - 3
         datestr = [num2str(year, '%04i'), num2str(month, '%02i'), num2str(day, '%02i')];
         fprintf(fid, '%d,%6s,.1f\r\n', station_no, datestr, dataString{day + 3});
+    end
+elseif strcmp(format, 'rhcsv')
+    % csv format for realtive humidity
+    for day = 1 : length(dataString)
+        fprintf(fid, '%4d,%d,%d,%2d,%2d,%2d,%2d,%2d,%2d,%2d,%2d\r\n', dataString(day, :)); 
     end
 else
     error('Error with output format. Check Argument.');
