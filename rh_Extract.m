@@ -181,6 +181,10 @@ while scriptRunning
             % new month started
             currentMonth = tr{3};
             monthHolder = ones(length(tr)-4, 11) * -99;
+            monthHolder(:, 1) = repmat(tr{2}, [length(tr)-4, 1]);
+            monthHolder(:, 2) = repmat(tr{3}, [length(tr)-4, 1]);
+            monthHolder(:, 3) = reshape(1:length(tr)-4, [length(tr)-4, 1]);
+            monthHolder(:, (tr{4}./3)+4) = reshape([tr{5:end}], [length(tr(5:end)), 1]);
         end
         
     elseif linedata == -1
